@@ -1,0 +1,12 @@
+### js实枚举
+```js
+let days
+
+(function(days){
+    days[days['a']=0]='a'
+    days[days['b']=2]='b'
+    days[days['c']=2]='c'
+})(days || (days = {}))
+
+export EnumDays = Object.freeze(days)
+```
