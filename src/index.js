@@ -1,37 +1,60 @@
-var restoreIpAddresses = function(s) {
-  s = [...s]
-  // if (s[0] == 0) return []
-  let list = [], lists = []
-
-  run(s, 4)
-  function checkNum(number) {
-      return ((number <= 255 && (parseInt(number)+'').length == number.length))
+function throttle(func, wait) {
+  let previous = 0;
+  return function() {
+    let now = Date.now();
+    let context = this;
+    let args = arguments;
+    if (now - previous > wait) {
+      func.apply(context, args);
+      previous = now;
+    }
   }
-  function run(s, level) {
-      if (level == 1) {
-          const target = s.join('')
-          if (checkNum(target)) {
-              list.push(target)
-              lists.push([].concat(list).join('.'))
-              list.pop()
-          }
-          return
-      }
+}
+// function throttle(func, wait) {
+//   let timeout;
+//   return function() {
+//       let context = this;
+//       let args = arguments;
+//       if (!timeout) {
+//           timeout = setTimeout(() => {
+//               timeout = null;
+//               func.apply(context, args)
+//           }, wait)
+//       }
 
-      const lvl = level - 1
-      let number = 1
-      while (s.length >= number && number <= 3) {
-          const target = [].concat(s).splice(0, number).join('')
-          if (checkNum(target)) {
-              list.push(target)
-              run([].concat(s).slice(number), lvl)
-              list.pop()
-          }
-          number++
-      }
+//   }
+// }
+
+
+function throttle1(func, wait, immediate = false) {
+  let timer = null;
+  let first = Date.now();
+  return function() {
+    let context = this;
+    let args = arguments;
+    let now = Date.now();
+    
+    if (immediate) {
+      func.apply(context, args)
+      immediate = false;
+    }
+
+    if ((now - first) >= wait && !timer) {
+      timer = setTimeout(function() {
+        func.apply(context, args)
+        clearTimeout(timer);
+        timer = null
+      }, wait)
+    }
   }
+}
 
-  return lists
-};
+let myFun = function(timer, num) {
+  console.log('执行', timer, num)
+}
 
-console.log(restoreIpAddresses('25525511135'))
+document.addEventListener('DOMContentLoaded', main())
+
+function main() {
+  document.getElementById('app').addEventListener('mousemove', throttle1(myFun, 1000, true))
+}
