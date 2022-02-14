@@ -1,60 +1,18 @@
-function throttle(func, wait) {
-  let previous = 0;
-  return function() {
-    let now = Date.now();
-    let context = this;
-    let args = arguments;
-    if (now - previous > wait) {
-      func.apply(context, args);
-      previous = now;
-    }
-  }
-}
-// function throttle(func, wait) {
-//   let timeout;
-//   return function() {
-//       let context = this;
-//       let args = arguments;
-//       if (!timeout) {
-//           timeout = setTimeout(() => {
-//               timeout = null;
-//               func.apply(context, args)
-//           }, wait)
-//       }
+import Promise from "./promise.js"
 
-//   }
-// }
-
-
-function throttle1(func, wait, immediate = false) {
-  let timer = null;
-  let first = Date.now();
-  return function() {
-    let context = this;
-    let args = arguments;
-    let now = Date.now();
-    
-    if (immediate) {
-      func.apply(context, args)
-      immediate = false;
-    }
-
-    if ((now - first) >= wait && !timer) {
-      timer = setTimeout(function() {
-        func.apply(context, args)
-        clearTimeout(timer);
-        timer = null
-      }, wait)
-    }
-  }
+let p1 = function() {
+  return new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      reject(3)
+    }, 1000)
+  })
 }
 
-let myFun = function(timer, num) {
-  console.log('执行', timer, num)
+Promise.prototype.catch = function(reject) {
+  return this.then(null, reject)
 }
+Promise.resolve = value => new Promise(resolve => resolve(value))
 
-document.addEventListener('DOMContentLoaded', main())
-
-function main() {
-  document.getElementById('app').addEventListener('mousemove', throttle1(myFun, 1000, true))
-}
+Promise.resolve(function() {
+  console.log('a')
+}).then(val => console.log(val))

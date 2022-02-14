@@ -1,8 +1,3 @@
-
-# 实现Promise/A+规范
->通过 npm install promises-aplus-tests ，可以下载测试套件。
-
-```js
 const isFunction = obj => typeof obj === 'function'
 const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]'
 const isThenable = obj => (isFunction(obj) || isObject(obj)) && 'then' in obj
@@ -99,12 +94,5 @@ const resolvePromise = (promise, result, resolve, reject) => {
   resolve(result)
 }
 
-module.exports = Promise
-```
 
-
-
-
-
-参考文章：[100 行代码实现 Promises/A+ 规范](https://mp.weixin.qq.com/s/qdJ0Xd8zTgtetFdlJL3P1g)
-参考文章：[Promises/A+](https://promisesaplus.com/)
+export default Promise
