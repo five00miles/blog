@@ -1,6 +1,6 @@
 ###### 安装依赖失败
 
-```
+```shell
 npm install --ignore-script
 ```
 
