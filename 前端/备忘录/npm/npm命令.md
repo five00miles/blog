@@ -11,3 +11,9 @@ npm ci在以下情况下会明显更快
 - 有一个package-lock.json或npm-shrinkwrap.json文件
 - node_modules文件夹丢失或为空
 
+
+
+```shell
+sudo npm install --global --production windows-build-tools
+```
+
